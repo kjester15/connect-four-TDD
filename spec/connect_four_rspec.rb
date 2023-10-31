@@ -6,6 +6,10 @@ describe Game do
   describe '#initialize' do
     # Initialize -> No test necessary when only creating instance variables.
   end
+
+  describe '#print_board' do
+    # method only prints to terminal - no test necessary
+  end
 end
 
 describe Player do
