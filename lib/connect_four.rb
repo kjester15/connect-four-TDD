@@ -44,16 +44,20 @@ a row and you win!"
   end
 
   def print_board
-    @board_array.each do |x|
+    @board_array.each do |row|
       puts ' - - - - - - - - - - - - - -'
       print '| '
-      x.each do |y|
-        print "#{y} | "
+      row.each do |column|
+        print "#{column} | "
       end
       puts
     end
     puts ' - - - - - - - - - - - - - -'
     puts '  1   2   3   4   5   6   7  '
+  end
+
+  def make_selection
+
   end
 end
 
