@@ -1,14 +1,6 @@
-# Player class is used to create player 1 and player 2
-class Player
-  def initialize
-    @name = ''
-    @symbol = ''
-  end
-end
-
 # Game class is used to create the Game board and methods
 class Game
-  attr_accessor :board_array
+  attr_accessor :board_array, :player1_name, :player1_symbol, :player2_name, :player2_symbol
 
   def initialize
     @board_array = [[' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
@@ -57,7 +49,7 @@ a row and you win!"
   end
 
   def make_selection
-
+    puts 'Choose a column, 1-7, to drop your piece into.'
   end
 end
 
