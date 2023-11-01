@@ -4,9 +4,6 @@ class Player
     @name = ''
     @symbol = ''
   end
-
-  def make_selection
-  end
 end
 
 # Game class is used to create the Game board and methods
@@ -44,7 +41,6 @@ class Game
     puts "You'll take turns choosing a column to 'drop' your piece into, choosing a number between 1 and 7. Get 4 in \
 a row and you win!"
     puts "Here is your board - #{@player1_name}, you go first!"
-    self.print_board
   end
 
   def print_board
