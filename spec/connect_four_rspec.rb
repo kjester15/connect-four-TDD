@@ -18,4 +18,7 @@ describe Player do
   describe '#initialize' do
     # Initialize -> No test necessary when only creating instance variables.
   end
+
+  describe '#make_selection' do
+  end
 end

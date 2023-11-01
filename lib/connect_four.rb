@@ -4,6 +4,9 @@ class Player
     @name = ''
     @symbol = ''
   end
+
+  def make_selection
+  end
 end
 
 # Game class is used to create the Game board and methods
@@ -11,22 +14,49 @@ class Game
   attr_accessor :board_array
 
   def initialize
-    @board_array = [%w[a1 a2 a3 a4 a5 a6 a7], %w[b1 b2 b3 b4 b5 b6 b7], %w[c1 c2 c3 c4 c5 c6 c7],
-                    %w[d1 d2 d3 d4 d5 d6 d7], %w[e1 e2 e3 e4 e5 e6 e7], %w[f1 f2 f3 f4 f5 f6 f7]]
+    @board_array = [[' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                    [' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                    [' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' ']]
+    @player1_name = ''
+    @player2_name = ''
+    @player1_symbol = ''
+    @player2_symbol = ''
+  end
+
+  def greeting_setup
+    puts 'Hello! Welcome to Connect Four. Let\'s play a game in the console.'
+    puts 'What is player 1\'s name?'
+    @player1_name = gets.chomp
+    puts 'What is player 1\'s symbol?'
+    @player1_symbol = gets.chomp
+    until @player1_symbol.length == 1
+      puts 'Please choose a letter that is only 1 character long.'
+      @player1_symbol = gets.chomp
+    end
+    puts 'What is player 2\'s name?'
+    @player2_name = gets.chomp
+    puts 'What is player 2\'s symbol?'
+    @player2_symbol = gets.chomp
+    until @player2_symbol.length == 1 && @player2_symbol != @player1_symbol
+      puts 'Please choose a letter that is only 1 character long, and has not been chosen by Player 1.'
+      @player2_symbol = gets.chomp
+    end
+    puts "You'll take turns choosing a column to 'drop' your piece into, choosing a number between 1 and 7. Get 4 in \
+a row and you win!"
+    puts "Here is your board - #{@player1_name}, you go first!"
+    self.print_board
   end
 
   def print_board
     @board_array.each do |x|
-      puts '- - - - - - - - - - - - - - - - -'
+      puts ' - - - - - - - - - - - - - -'
+      print '| '
       x.each do |y|
         print "#{y} | "
       end
       puts
     end
-    puts '- - - - - - - - - - - - - - - - -'
+    puts ' - - - - - - - - - - - - - -'
   end
-
 end
 
-game = Game.new
-game.print_board
