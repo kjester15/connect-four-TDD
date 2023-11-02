@@ -7,6 +7,10 @@ describe Game do
     # Initialize -> No test necessary when only creating instance variables.
   end
 
+  describe '#greeting_setup' do
+    # method only prints to terminal and updates instance variables - no test necessary
+  end
+
   describe '#print_board' do
     # method only prints to terminal - no test necessary
   end
@@ -72,8 +76,6 @@ describe Game do
   end
 
   describe '#check_column' do
-    subject(:game_main) { described_class.new }
-
     context 'when a column is not full' do
       it 'returns false' do
         selection = 1
@@ -92,6 +94,28 @@ describe Game do
         result = game_main.check_column(selection)
         expect(result).to be true
       end
+    end
+  end
+
+  describe '#update_board' do
+    context 'when a selection is made' do
+      xit 'updates the lowest space in the selected column' do
+        array = [[' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                 [' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                 [' ', ' ', ' ', ' ', ' ', ' ', ' '], ['x', ' ', ' ', ' ', ' ', ' ', ' ']]
+        game_main.instance_variable_set(:@board_array, array)
+        selection = 1
+        result = game_main.update_board(selection)
+        expect(result).to eq(array)
+      end
+    end
+  end
+
+  describe '#update_player_turn' do
+    it 'changes the player_turn variable to the opposite player' do
+      next_player = { name: 'cat', symbol: '' }
+      game_main.update_player_turn
+      expect(game_main.instance_variable_get(:@player_turn)).to eq(next_player)
     end
   end
 end
