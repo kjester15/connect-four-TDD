@@ -54,17 +54,18 @@ describe Game do
 
     context 'when a column is full' do
       before do
-        allow(game_main).to receive(:gets).and_return(1)
+        allow(game_main).to receive(:gets).and_return(1, 1, 2)
       end
 
-      xit 'does not accept the column as a valid selection' do
-        game_main.board_array = [['x', ' ', ' ', ' ', ' ', ' ', ' '], ['x', ' ', ' ', ' ', ' ', ' ', ' '],
-                                 ['x', ' ', ' ', ' ', ' ', ' ', ' '], ['x', ' ', ' ', ' ', ' ', ' ', ' '],
-                                 ['x', ' ', ' ', ' ', ' ', ' ', ' '], ['x', ' ', ' ', ' ', ' ', ' ', ' ']]
+      it 'does not accept the column as a valid selection' do
+        array = [['x', ' ', ' ', ' ', ' ', ' ', ' '], ['x', ' ', ' ', ' ', ' ', ' ', ' '],
+                 ['x', ' ', ' ', ' ', ' ', ' ', ' '], ['x', ' ', ' ', ' ', ' ', ' ', ' '],
+                 ['x', ' ', ' ', ' ', ' ', ' ', ' '], ['x', ' ', ' ', ' ', ' ', ' ', ' ']]
+        game_main.instance_variable_set(:@board_array, array)
         initial_prompt = 'Choose a column, 1-7, to drop your piece into.'
         retry_prompt = 'Please choose a valid column to drop your piece.'
         expect(game_main).to receive(:puts).with(initial_prompt).once
-        expect(game_main).to receive(:puts).with(retry_prompt).once
+        expect(game_main).to receive(:puts).with(retry_prompt).twice
         game_main.make_selection
       end
     end
@@ -75,9 +76,6 @@ describe Game do
 
     context 'when a column is not full' do
       it 'returns false' do
-        # array = [[' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
-        #          [' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
-        #          [' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' ']]
         selection = 1
         result = game_main.check_column(selection)
         expect(result).to be false

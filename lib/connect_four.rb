@@ -51,9 +51,11 @@ a row and you win!"
   def make_selection
     puts 'Choose a column, 1-7, to drop your piece into.'
     selection = gets.to_i
-    until (1..7).include? selection
+    column_full = check_column(selection)
+    until ((1..7).include? selection) && (column_full == false)
       puts 'Please choose a valid column to drop your piece.'
       selection = gets.to_i
+      column_full = check_column(selection)
     end
     selection
   end
