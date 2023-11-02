@@ -50,6 +50,22 @@ a row and you win!"
 
   def make_selection
     puts 'Choose a column, 1-7, to drop your piece into.'
+    selection = gets.to_i
+    until (1..7).include? selection
+      puts 'Please choose a valid column to drop your piece.'
+      selection = gets.to_i
+    end
+    selection
+  end
+
+  def check_column(column)
+    index = column - 1
+    @board_array.each do |row|
+      if row[index] == ' '
+        return false
+      end
+    end
+    true
   end
 end
 
