@@ -99,21 +99,29 @@ describe Game do
 
   describe '#update_board' do
     context 'when a selection is made' do
-      xit 'updates the lowest space in the selected column' do
-        array = [[' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
-                 [' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
-                 [' ', ' ', ' ', ' ', ' ', ' ', ' '], ['x', ' ', ' ', ' ', ' ', ' ', ' ']]
-        game_main.instance_variable_set(:@board_array, array)
+      it 'updates the lowest space in the selected column' do
+        new_array = [[' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                     [' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                     [' ', ' ', ' ', ' ', ' ', ' ', ' '], ['x', ' ', ' ', ' ', ' ', ' ', ' ']]
         selection = 1
-        result = game_main.update_board(selection)
-        expect(result).to eq(array)
+        game_main.update_board(selection)
+        expect(game_main.instance_variable_get(:@board_array)).to eq(new_array)
+      end
+
+      it 'updates the space with the appropriate player symbol' do
+        new_array = [[' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                     [' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                     [' ', ' ', ' ', ' ', ' ', ' ', ' '], ['x', ' ', ' ', ' ', ' ', ' ', ' ']]
+        selection = 1
+        game_main.update_board(selection)
+        expect(game_main.instance_variable_get(:@board_array)).to eq(new_array)
       end
     end
   end
 
   describe '#update_player_turn' do
     it 'changes the player_turn variable to the opposite player' do
-      next_player = { name: 'cat', symbol: '' }
+      next_player = { name: 'cat', symbol: 'y' }
       game_main.update_player_turn
       expect(game_main.instance_variable_get(:@player_turn)).to eq(next_player)
     end

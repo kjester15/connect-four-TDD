@@ -1,14 +1,14 @@
 # Game class is used to create the Game board and methods
 class Game
-  attr_accessor :board_array, :player1, :player2, :game_finished, :player_turn
+  attr_accessor :board_array, :player1, :player2, :player_turn, :game_finished
 
-  def initialize(board_array = Array.new(6) { Array.new(7) { ' ' } }, player1_name = 'kyle', player2_name = 'cat')
+  def initialize(board_array = Array.new(6) { Array.new(7) { ' ' } }, player1 = { name: 'kyle', symbol: 'x' }, player2 = { name: 'cat', symbol: 'y' })
     # https://www.theodinproject.com/lessons/ruby-nested-collections
     # created immutable nested array for board_array
     @board_array = board_array
+    @player1 = player1
+    @player2 = player2
     @player_turn = @player1
-    @player1 = { name: player1_name, symbol: '' }
-    @player2 = { name: player2_name, symbol: '' }
     @game_finished = false
   end
 
@@ -72,13 +72,19 @@ a row and you win!"
 
   def update_board(selection)
     index = selection - 1
+    start = -1
+    6.times do
+      if @board_array[start][index] == ' '
+        @board_array[start][index] = @player_turn[:symbol]
+        break
+      else
+        start -= 1
+      end
+    end
   end
 
   def update_player_turn
-    # p @player_turn
-    if @player_turn.nil?
-      @player_turn = @player2
-    elsif @player_turn == @player1
+    if @player_turn == @player1
       @player_turn = @player2
     elsif @player_turn == @player2
       @player_turn = @player1

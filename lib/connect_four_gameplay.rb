@@ -6,4 +6,5 @@ game.print_board
 until game.game_finished == true
   game.update_board(game.make_selection)
   game.update_player_turn
+  game.print_board
 end
