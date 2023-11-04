@@ -1,6 +1,8 @@
+require 'pry-byebug'
+
 # Game class is used to create the Game board and methods
 class Game
-  attr_accessor :board_array, :player1, :player2, :player_turn, :game_finished
+  attr_accessor :board_array, :player1, :player2, :player_turn, :game_finished, :last_position
 
   def initialize(board_array = Array.new(6) { Array.new(7) { ' ' } }, player1 = { name: 'kyle', symbol: 'x' }, player2 = { name: 'cat', symbol: 'y' })
     # https://www.theodinproject.com/lessons/ruby-nested-collections
@@ -10,6 +12,7 @@ class Game
     @player2 = player2
     @player_turn = @player1
     @game_finished = false
+    @last_position = []
   end
 
   def greeting_setup
@@ -76,6 +79,7 @@ a row and you win!"
     6.times do
       if @board_array[start][index] == ' '
         @board_array[start][index] = @player_turn[:symbol]
+        @last_position = [@board_array.length + start, index]
         break
       else
         start -= 1
@@ -88,6 +92,120 @@ a row and you win!"
       @player_turn = @player2
     elsif @player_turn == @player2
       @player_turn = @player1
+    end
+  end
+
+  def in_bounds?(position)
+    if position[0].between?(0, 5)
+      if position[1].between?(0, 6)
+        true
+      end
+    end
+  end
+
+  def check_win(current_position, direction = 'up', score = 1)
+    if score == 4
+      @game_finished = true
+      return
+    end
+
+    case direction
+    when 'up'
+      current_position[0] -= 1
+      if in_bounds?(current_position)
+        if @board_array[current_position[0]][current_position[1]] == @player_turn[:symbol]
+          score += 1
+          check_win(current_position, 'up', score)
+        else
+          check_win(@last_position.dup, 'right')
+        end
+      else
+        check_win(@last_position.dup, 'right')
+      end
+    when 'right'
+      current_position[1] += 1
+      if in_bounds?(current_position)
+        if @board_array[current_position[0]][current_position[1]] == @player_turn[:symbol]
+          score += 1
+          check_win(current_position, 'right', score)
+        else
+          check_win(@last_position.dup, 'down')
+        end
+      else
+        check_win(@last_position.dup, 'down')
+      end
+    when 'down'
+      current_position[0] += 1
+      if in_bounds?(current_position)
+        if @board_array[current_position[0]][current_position[1]] == @player_turn[:symbol]
+          score += 1
+          check_win(current_position, 'down', score)
+        else
+          check_win(@last_position.dup, 'left')
+        end
+      else
+        check_win(@last_position.dup, 'left')
+      end
+    when 'left'
+      current_position[1] -= 1
+      if in_bounds?(current_position)
+        if @board_array[current_position[0]][current_position[1]] == @player_turn[:symbol]
+          score += 1
+          check_win(current_position, 'left', score)
+        else
+          check_win(@last_position.dup, 'diag_up_left')
+        end
+      else
+        check_win(@last_position.dup, 'diag_up_left')
+      end
+    when 'diag_up_left'
+      current_position[0] -= 1
+      current_position[1] -= 1
+      if in_bounds?(current_position)
+        if @board_array[current_position[0]][current_position[1]] == @player_turn[:symbol]
+          score += 1
+          check_win(current_position, 'diag_up_left', score)
+        else
+          check_win(@last_position.dup, 'diag_up_right')
+        end
+      else
+        check_win(@last_position.dup, 'diag_up_right')
+      end
+    when 'diag_up_right'
+      current_position[0] -= 1
+      current_position[1] += 1
+      if in_bounds?(current_position)
+        if @board_array[current_position[0]][current_position[1]] == @player_turn[:symbol]
+          score += 1
+          check_win(current_position, 'diag_up_right', score)
+        else
+          check_win(@last_position.dup, 'diag_down_left')
+        end
+      else
+        check_win(@last_position.dup, 'diag_down_left')
+      end
+    when 'diag_down_left'
+      current_position[0] += 1
+      current_position[1] -= 1
+      if in_bounds?(current_position)
+        if @board_array[current_position[0]][current_position[1]] == @player_turn[:symbol]
+          score += 1
+          check_win(current_position, 'diag_down_left', score)
+        else
+          check_win(@last_position.dup, 'diag_down_right')
+        end
+      else
+        check_win(@last_position.dup, 'diag_down_right')
+      end
+    when 'diag_down_right'
+      current_position[0] += 1
+      current_position[1] += 1
+      if in_bounds?(current_position)
+        if @board_array[current_position[0]][current_position[1]] == @player_turn[:symbol]
+          score += 1
+          check_win(current_position, 'diag_down_right', score)
+        end
+      end
     end
   end
 end

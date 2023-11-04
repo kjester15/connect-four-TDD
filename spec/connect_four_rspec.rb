@@ -126,4 +126,32 @@ describe Game do
       expect(game_main.instance_variable_get(:@player_turn)).to eq(next_player)
     end
   end
+
+  describe '#in_bounds?' do
+    context 'when a position is within the confines of the board' do
+      it 'returns true' do
+        position = [1, 2]
+        expect(game_main.in_bounds?(position)).to be true
+      end
+    end
+
+    context 'when a position is outside the confines of the board' do
+      it 'returns nil' do
+        position = [-1, 9]
+        expect(game_main.in_bounds?(position)).to be nil
+      end
+    end
+  end
+
+  describe '#check_win' do
+    xit 'updates game_finished to true when a player wins' do
+      array = [[' ', ' ', ' ', ' ', ' ', ' ', ' '], ['x', ' ', ' ', ' ', ' ', ' ', ' '],
+               [' ', ' ', ' ', ' ', ' ', ' ', ' '], ['x', ' ', ' ', ' ', ' ', ' ', ' '],
+               ['x', ' ', ' ', ' ', ' ', ' ', ' '], ['x', ' ', ' ', ' ', ' ', ' ', ' ']]
+      last_position = [1, 0]
+      game_main.instance_variable_set(:@board_array, array)
+      game_main.check_win(last_position)
+      expect(game_main.instance_variable_get(:@game_finished)).to be true
+    end
+  end
 end
