@@ -144,14 +144,52 @@ describe Game do
   end
 
   describe '#check_win' do
-    xit 'updates game_finished to true when a player wins' do
-      array = [[' ', ' ', ' ', ' ', ' ', ' ', ' '], ['x', ' ', ' ', ' ', ' ', ' ', ' '],
-               [' ', ' ', ' ', ' ', ' ', ' ', ' '], ['x', ' ', ' ', ' ', ' ', ' ', ' '],
-               ['x', ' ', ' ', ' ', ' ', ' ', ' '], ['x', ' ', ' ', ' ', ' ', ' ', ' ']]
-      last_position = [1, 0]
-      game_main.instance_variable_set(:@board_array, array)
-      game_main.check_win(last_position)
-      expect(game_main.instance_variable_get(:@game_finished)).to be true
+    context 'when a player wins' do
+      it 'updates game_finished to true when a player wins vertically' do
+        array = [[' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                 ['x', ' ', ' ', ' ', ' ', ' ', ' '], ['x', ' ', ' ', ' ', ' ', ' ', ' '],
+                 ['x', ' ', ' ', ' ', ' ', ' ', ' '], ['x', ' ', ' ', ' ', ' ', ' ', ' ']]
+        position = [2, 0]
+        game_main.instance_variable_set(:@board_array, array)
+        game_main.instance_variable_set(:@last_position, position)
+        game_main.check_win(game_main.last_position.dup)
+        expect(game_main.instance_variable_get(:@game_finished)).to be true
+      end
+
+      it 'updates game_finished to true when a player wins horizontally' do
+        array = [[' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                 [' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                 [' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', 'x', 'x', 'x', 'x', ' ', ' ']]
+        position = [5, 1]
+        game_main.instance_variable_set(:@board_array, array)
+        game_main.instance_variable_set(:@last_position, position)
+        game_main.check_win(game_main.last_position.dup)
+        expect(game_main.instance_variable_get(:@game_finished)).to be true
+      end
+
+      it 'updates game_finished to true when a player wins diagonally' do
+        array = [[' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                 [' ', ' ', ' ', 'x', ' ', ' ', ' '], [' ', ' ', 'x', ' ', ' ', ' ', ' '],
+                 [' ', 'x', ' ', ' ', ' ', ' ', ' '], ['x', ' ', ' ', ' ', ' ', ' ', ' ']]
+        position = [5, 0]
+        game_main.instance_variable_set(:@board_array, array)
+        game_main.instance_variable_set(:@last_position, position)
+        game_main.check_win(game_main.last_position.dup)
+        expect(game_main.instance_variable_get(:@game_finished)).to be true
+      end
+    end
+
+    context 'when a player does not win' do
+      it 'does not update game_finished to true' do
+        array = [[' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                 [' ', ' ', ' ', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', ' ', ' '],
+                 [' ', ' ', ' ', ' ', ' ', ' ', ' '], ['x', ' ', 'x', ' ', 'x', ' ', 'x']]
+        position = [2, 0]
+        game_main.instance_variable_set(:@board_array, array)
+        game_main.instance_variable_set(:@last_position, position)
+        game_main.check_win(game_main.last_position.dup)
+        expect(game_main.instance_variable_get(:@game_finished)).to be false
+      end
     end
   end
 end
