@@ -109,9 +109,14 @@ a row and you win!"
     puts "#{@player_turn[:name]}, your turn!"
   end
 
+  def end_message
+    puts "#{@player_turn[:name]} wins!"
+  end
+
   def check_win(current_position, direction = 'up', score = 1)
     if score == 4
       @game_finished = true
+      end_message
       return
     end
 
