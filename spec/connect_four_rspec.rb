@@ -23,6 +23,10 @@ describe Game do
     # method only prints to terminal - no test necessary
   end
 
+  describe '#draw_message' do
+    # method only prints to terminal - no test necessary
+  end
+
   describe '#make_selection' do
     context 'when invalid selections are made before a valid selection' do
       before do

@@ -7,6 +7,7 @@ until game.game_finished == true
   game.turn_message
   game.update_board(game.make_selection)
   game.print_board
+  # game.check_draw
   game.check_win(game.last_position.dup)
   game.update_player_turn
 end

@@ -113,6 +113,19 @@ a row and you win!"
     puts "#{@player_turn[:name]} wins!"
   end
 
+  def draw_message
+    puts "It's a draw!"
+  end
+
+  # def check_draw
+  #   @board_array.each do |row|
+  #     if row.include?(' ')
+  #       return false
+  #     end
+  #   end
+  #   @game_finished = true
+  # end
+
   def check_win(current_position, direction = 'up', score = 1)
     if score == 4
       @game_finished = true
@@ -121,7 +134,7 @@ a row and you win!"
     end
 
     case direction
-    when 'up'
+    when 'vertical'
       current_position[0] -= 1
       if in_bounds?(current_position)
         if @board_array[current_position[0]][current_position[1]] == @player_turn[:symbol]
@@ -133,7 +146,7 @@ a row and you win!"
       else
         check_win(@last_position.dup, 'right')
       end
-    when 'right'
+    when 'horizontal'
       current_position[1] += 1
       if in_bounds?(current_position)
         if @board_array[current_position[0]][current_position[1]] == @player_turn[:symbol]
@@ -145,6 +158,33 @@ a row and you win!"
       else
         check_win(@last_position.dup, 'down')
       end
+    when 'diag_left'
+      current_position[0] -= 1
+      current_position[1] -= 1
+      if in_bounds?(current_position)
+        if @board_array[current_position[0]][current_position[1]] == @player_turn[:symbol]
+          score += 1
+          check_win(current_position, 'diag_up_left', score)
+        else
+          check_win(@last_position.dup, 'diag_up_right')
+        end
+      else
+        check_win(@last_position.dup, 'diag_up_right')
+      end
+    when 'diag_right'
+      current_position[0] -= 1
+      current_position[1] += 1
+      if in_bounds?(current_position)
+        if @board_array[current_position[0]][current_position[1]] == @player_turn[:symbol]
+          score += 1
+          check_win(current_position, 'diag_up_right', score)
+        else
+          check_win(@last_position.dup, 'diag_down_left')
+        end
+      else
+        check_win(@last_position.dup, 'diag_down_left')
+      end
+    # old below
     when 'down'
       current_position[0] += 1
       if in_bounds?(current_position)
@@ -168,32 +208,6 @@ a row and you win!"
         end
       else
         check_win(@last_position.dup, 'diag_up_left')
-      end
-    when 'diag_up_left'
-      current_position[0] -= 1
-      current_position[1] -= 1
-      if in_bounds?(current_position)
-        if @board_array[current_position[0]][current_position[1]] == @player_turn[:symbol]
-          score += 1
-          check_win(current_position, 'diag_up_left', score)
-        else
-          check_win(@last_position.dup, 'diag_up_right')
-        end
-      else
-        check_win(@last_position.dup, 'diag_up_right')
-      end
-    when 'diag_up_right'
-      current_position[0] -= 1
-      current_position[1] += 1
-      if in_bounds?(current_position)
-        if @board_array[current_position[0]][current_position[1]] == @player_turn[:symbol]
-          score += 1
-          check_win(current_position, 'diag_up_right', score)
-        else
-          check_win(@last_position.dup, 'diag_down_left')
-        end
-      else
-        check_win(@last_position.dup, 'diag_down_left')
       end
     when 'diag_down_left'
       current_position[0] += 1
