@@ -120,10 +120,6 @@ a row and you win!"
     end
   end
 
-  def draw_message
-    puts "It's a draw!"
-  end
-
   def check_draw
     @board_array.each do |row|
       if row.include?(' ')
