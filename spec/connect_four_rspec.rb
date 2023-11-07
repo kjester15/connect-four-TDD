@@ -155,6 +155,36 @@ describe Game do
     end
   end
 
+  describe '#check_draw' do
+    it 'updates game_finished to true when there is a draw' do
+      array = [['x', 'x', 'x', 'x', 'x', 'x', 'x'], ['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+               ['x', 'x', 'x', 'x', 'x', 'x', 'x'], ['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+               ['x', 'x', 'x', 'x', 'x', 'x', 'x'], ['x', 'x', 'x', 'x', 'x', 'x', 'x']]
+      game_main.instance_variable_set(:@board_array, array)
+      game_main.check_draw
+      expect(game_main.instance_variable_get(:@game_finished)).to be true
+    end
+
+    it 'updates tie to true when there is a draw' do
+      array = [['x', 'x', 'x', 'x', 'x', 'x', 'x'], ['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+               ['x', 'x', 'x', 'x', 'x', 'x', 'x'], ['x', 'x', 'x', 'x', 'x', 'x', 'x'],
+               ['x', 'x', 'x', 'x', 'x', 'x', 'x'], ['x', 'x', 'x', 'x', 'x', 'x', 'x']]
+      game_main.instance_variable_set(:@board_array, array)
+      game_main.check_draw
+      expect(game_main.instance_variable_get(:@tie)).to be true
+    end
+
+    it 'does not update game_finished when there is not a draw' do
+      game_main.check_draw
+      expect(game_main.instance_variable_get(:@game_finished)).to be false
+    end
+
+    it 'does not update tie when there is not a draw' do
+      game_main.check_draw
+      expect(game_main.instance_variable_get(:@game_finished)).to be false
+    end
+  end
+
   describe '#check_win' do
     context 'when a player wins' do
       it 'updates game_finished to true when a player wins vertically' do

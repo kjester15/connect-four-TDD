@@ -14,6 +14,7 @@ class Game
     @player2 = player2
     @player_turn = @player1
     @game_finished = false
+    @tie = false
     @last_position = []
   end
 
@@ -111,7 +112,11 @@ a row and you win!"
 
   def end_message
     if @game_finished == true
-      puts "#{@player_turn[:name]} wins!"
+      if @tie == false
+        puts "#{@player_turn[:name]} wins!"
+      else
+        puts "It's a draw!"
+      end
     end
   end
 
@@ -119,14 +124,15 @@ a row and you win!"
     puts "It's a draw!"
   end
 
-  # def check_draw
-  #   @board_array.each do |row|
-  #     if row.include?(' ')
-  #       return false
-  #     end
-  #   end
-  #   @game_finished = true
-  # end
+  def check_draw
+    @board_array.each do |row|
+      if row.include?(' ')
+        return false
+      end
+    end
+    @game_finished = true
+    @tie = true
+  end
 
   def check_win(current_position, row = 0, column = 0, direction = 'vertical', score = 0)
     if score == 4
