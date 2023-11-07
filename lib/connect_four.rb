@@ -110,7 +110,9 @@ a row and you win!"
   end
 
   def end_message
-    puts "#{@player_turn[:name]} wins!"
+    if @game_finished == true
+      puts "#{@player_turn[:name]} wins!"
+    end
   end
 
   def draw_message
@@ -126,109 +128,76 @@ a row and you win!"
   #   @game_finished = true
   # end
 
-  def check_win(current_position, direction = 'up', score = 1)
+  def check_win(current_position, row = 0, column = 0, direction = 'vertical', score = 0)
     if score == 4
       @game_finished = true
-      end_message
       return
     end
 
     case direction
     when 'vertical'
-      current_position[0] -= 1
-      if in_bounds?(current_position)
-        if @board_array[current_position[0]][current_position[1]] == @player_turn[:symbol]
+      if in_bounds?([row, current_position[1]])
+        if @board_array[row][current_position[1]] == @player_turn[:symbol]
           score += 1
-          check_win(current_position, 'up', score)
-        else
-          check_win(@last_position.dup, 'right')
+          row += 1
+          check_win(current_position, row, 0, 'vertical', score)
+        elsif @board_array[row][current_position[1]] != @player_turn[:symbol]
+          score = 0
+          row += 1
+          check_win(current_position, row, 0, 'vertical', score)
         end
       else
-        check_win(@last_position.dup, 'right')
+        check_win(@last_position.dup, 0, 0, 'horizontal', 0)
       end
     when 'horizontal'
-      current_position[1] += 1
-      if in_bounds?(current_position)
-        if @board_array[current_position[0]][current_position[1]] == @player_turn[:symbol]
+      if in_bounds?([current_position[0], column])
+        if @board_array[current_position[0]][column] == @player_turn[:symbol]
           score += 1
-          check_win(current_position, 'right', score)
-        else
-          check_win(@last_position.dup, 'down')
+          column += 1
+          check_win(current_position, 0, column, 'horizontal', score)
+        elsif @board_array[row][current_position[1]] != @player_turn[:symbol]
+          score = 0
+          column += 1
+          check_win(current_position, 0, column, 'horizontal', score)
         end
       else
-        check_win(@last_position.dup, 'down')
+        check_win(@last_position.dup, 0, 0, 'diag_down', 0)
       end
-    when 'diag_left'
-      current_position[0] -= 1
-      current_position[1] -= 1
-      if in_bounds?(current_position)
-        if @board_array[current_position[0]][current_position[1]] == @player_turn[:symbol]
-          score += 1
-          check_win(current_position, 'diag_up_left', score)
-        else
-          check_win(@last_position.dup, 'diag_up_right')
+    when 'diag_down'
+      if score.zero?
+        row = current_position[0]
+        column = current_position[1]
+        until row.zero? || column.zero?
+          row -= 1
+          column -= 1
         end
-      else
-        check_win(@last_position.dup, 'diag_up_right')
       end
-    when 'diag_right'
-      current_position[0] -= 1
-      current_position[1] += 1
-      if in_bounds?(current_position)
-        if @board_array[current_position[0]][current_position[1]] == @player_turn[:symbol]
+      if in_bounds?([row, column])
+        if @board_array[row][column] == @player_turn[:symbol]
           score += 1
-          check_win(current_position, 'diag_up_right', score)
+          row += 1
+          column += 1
+          check_win(current_position, row, column, 'diag_down', score)
         else
-          check_win(@last_position.dup, 'diag_down_left')
+          check_win(@last_position.dup, 0, 0, 'diag_up', 0)
         end
-      else
-        check_win(@last_position.dup, 'diag_down_left')
       end
-    # old below
-    when 'down'
-      current_position[0] += 1
-      if in_bounds?(current_position)
-        if @board_array[current_position[0]][current_position[1]] == @player_turn[:symbol]
-          score += 1
-          check_win(current_position, 'down', score)
-        else
-          check_win(@last_position.dup, 'left')
+      check_win(@last_position.dup, 0, 0, 'diag_up', 0)
+    when 'diag_up'
+      if score.zero?
+        row = current_position[0]
+        column = current_position[1]
+        until row.zero? || column.zero?
+          row += 1
+          column -= 1
         end
-      else
-        check_win(@last_position.dup, 'left')
       end
-    when 'left'
-      current_position[1] -= 1
-      if in_bounds?(current_position)
-        if @board_array[current_position[0]][current_position[1]] == @player_turn[:symbol]
+      if in_bounds?([row, column])
+        if @board_array[row][column] == @player_turn[:symbol]
           score += 1
-          check_win(current_position, 'left', score)
-        else
-          check_win(@last_position.dup, 'diag_up_left')
-        end
-      else
-        check_win(@last_position.dup, 'diag_up_left')
-      end
-    when 'diag_down_left'
-      current_position[0] += 1
-      current_position[1] -= 1
-      if in_bounds?(current_position)
-        if @board_array[current_position[0]][current_position[1]] == @player_turn[:symbol]
-          score += 1
-          check_win(current_position, 'diag_down_left', score)
-        else
-          check_win(@last_position.dup, 'diag_down_right')
-        end
-      else
-        check_win(@last_position.dup, 'diag_down_right')
-      end
-    when 'diag_down_right'
-      current_position[0] += 1
-      current_position[1] += 1
-      if in_bounds?(current_position)
-        if @board_array[current_position[0]][current_position[1]] == @player_turn[:symbol]
-          score += 1
-          check_win(current_position, 'diag_down_right', score)
+          row -= 1
+          column += 1
+          check_win(current_position, row, column, 'diag_up', score)
         end
       end
     end
